@@ -113,8 +113,13 @@ public class Waitinglist {
 		return null;
 	}
 	
+<<<<<<< HEAD
 	public ArrayList<String> checkPriority(int length,ArrayList<String> emails,int ApartmentId){
 
+=======
+
+	public ArrayList<String> checkPriority(int length,ArrayList<String> emails,int ApartmentId){
+>>>>>>> 38b092eb9421e5d40cac44a0d9b54bcd3e67a7f6
 
 				ArrayList<String> emailssorted = getNeighbourEmails(ApartmentId);
 				try {
@@ -185,6 +190,7 @@ public class Waitinglist {
 		return emailssorted;
 	}
 
+<<<<<<< HEAD
 	public ArrayList<String> getSingleWaitinglist(int length,int priority){
 		if (priority>4||priority<1){
 			return null;
@@ -205,4 +211,6 @@ public class Waitinglist {
 		}
 		return emailssorted;
 	}
+=======
+>>>>>>> 38b092eb9421e5d40cac44a0d9b54bcd3e67a7f6
 }
