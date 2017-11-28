@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import dk.binfo.models.User;
 import dk.binfo.services.UserService;
+import sun.awt.ModalExclude;
 
 @Controller
 public class LoginController {
@@ -22,6 +23,13 @@ public class LoginController {
 	public ModelAndView login(){
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("login");
+		return modelAndView;
+	}
+
+	@RequestMapping(value = {"/accessDenied"}, method = RequestMethod.GET)
+	public ModelAndView accessDenied() {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("/accessDenied");
 		return modelAndView;
 	}
 
@@ -46,29 +54,38 @@ public class LoginController {
 		ModelAndView modelAndView = new ModelAndView();
 		User userExists = userService.findUserByEmail(user.getEmail());
 		if (userExists != null) {
-			bindingResult.rejectValue("email", "error.user", "There is already a user registered with the email provided");
+			bindingResult.rejectValue("email", "error.user", "Der eksisterer allerede en bruger med den angivne email");
 		}
 		if (bindingResult.hasErrors()) {
 			modelAndView.setViewName("registration");
 		} else {
 			userService.saveUser(user);
-			modelAndView.addObject("successMessage", "User has been registered successfully");
+			modelAndView.addObject("successMessage", "SUCCES!: Du har tilføjet en ny bruger.");
 			modelAndView.addObject("user", new User());
 			modelAndView.setViewName("registration");
 		}
 		return modelAndView;
 	}
 
-	@RequestMapping(value={"/admin/home", "/admin"}, method = RequestMethod.GET)
-	public ModelAndView home(){
+	@RequestMapping(value= "/home", method = RequestMethod.GET) //TODO Vælg om der skal være /user også
+	public ModelAndView userHome(){
 		ModelAndView modelAndView = new ModelAndView();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User user = userService.findUserByEmail(auth.getName());
-		modelAndView.addObject("userName", user.getName() + " " + user.getLastName());
-		modelAndView.addObject("userEmail", user.getEmail());
-		modelAndView.addObject("userID", user.getId() + " ");
-		modelAndView.addObject("adminMessage","Fedt man spa du er admin");
-		modelAndView.setViewName("admin/home");
+		modelAndView.addObject(user);
+		modelAndView.addObject("userMessage","Du er logget ind");
+		modelAndView.setViewName("/home");
 		return modelAndView;
 	}
+	
+	@RequestMapping(value={"/settings"}, method = RequestMethod.GET)
+	public ModelAndView settings(){
+		ModelAndView modelAndView = new ModelAndView();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User user = userService.findUserByEmail(auth.getName());
+		modelAndView.addObject(user);
+		modelAndView.setViewName("/settings");
+		return modelAndView;
+	}
+	
 }

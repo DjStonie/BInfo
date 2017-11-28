@@ -10,7 +10,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
+import org.thymeleaf.spring4.SpringTemplateEngine;
+import org.thymeleaf.templateresolver.ITemplateResolver;
 
 @Configuration
 @EnableWebSecurity
@@ -38,19 +42,35 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			authorizeRequests()
 				.antMatchers("/").permitAll()
 				.antMatchers("/login").permitAll()
+				.antMatchers("/apartment/**").hasAuthority("ADMIN")
 				.antMatchers("/registration").permitAll()
-				.antMatchers("/error").hasAuthority("ADMIN")
+				.antMatchers("/error").permitAll()
+				// TODO admin skal kunne se alle ventelister (/admin/list/Family/intern/ekstern/connectMrawesomeSexy)
+				// TODO lave en SQL side hvor admin kan se hvornår en bruger loggede sidst ind og deres IP.
+				// TODO lave så admin kan godkende nyopskrevet brugere.
+				// TODO Admin skal godkende en bruger har betalt
+				// TODO brugere skal kunne registrere sig som brugere
+				// TODO Brugere skal kunne opskrive sig til en venteliste
+				// TODO brugere skal kunne indtaste og redigere deres ønske til lejligheder og makspris
+				// TODO Se placering på venteliste
+				// TODO lave at admin får en mail når en bruger opretter sig og sende mail til brugere
+				// TODO Sende mail til en bruger hvis de ikke har betalt 1 måned forud.
+				// TODO Generere en venteliste til PDF til admin
+				// TODO admin skal kunne oprette en ny bruger/se alle brugere og søge/edit (/admin/user/ + HTML)
+				// TODO lav user bruger indstillinger side (/user/settings Controller + HTML) - MORTEN
+				// TODO lav admin bruger indstillinger (/admin/settings Controller + html) - MORTEN
+				.antMatchers("/user/**").hasAuthority("user") //TODO lav en user adminHome side (Controller, html)
 				.antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
 				.authenticated().and().csrf().disable().formLogin()
 				.loginPage("/login").failureUrl("/login?error=true")
-				.defaultSuccessUrl("/admin/home")
+				.defaultSuccessUrl("/home") //TODO Ændre til en user homepage. Og lav en userpage.
 				.usernameParameter("email")
 				.passwordParameter("password")
-				.and().rememberMe()
+				.and().rememberMe().key("rem-me-key").rememberMeParameter("remember-me").rememberMeCookieName("remember-me") // TODO Check om der er sikkershedsproblemer
 				.and().logout()
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 				.logoutSuccessUrl("/").and().exceptionHandling()
-				.accessDeniedPage("/access-denied");
+				.accessDeniedPage("/accessDenied").accessDeniedHandler(accessDeniedHandler());
 	}
 	
 	@Override
@@ -62,6 +82,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	public BCryptPasswordEncoder passwordEncoder() {
 		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 		return bCryptPasswordEncoder;
+	}
+
+	@Bean
+	public AccessDeniedHandler accessDeniedHandler(){
+		return new CustomAccessDeniedHandler();
+	}
+
+	@Bean
+	public SpringTemplateEngine templateEngine(ITemplateResolver templateResolver, SpringSecurityDialect sec) {
+		final SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+		templateEngine.setTemplateResolver(templateResolver);
+		templateEngine.addDialect(sec); // Enable use of "sec"
+		return templateEngine;
 	}
 
 }
@@ -80,7 +113,7 @@ Lines from 64 to 68 → Due we have implemented Spring Security we need to let S
 
 /* The WebSecurityConfig class is annotated with @EnableWebSecurity to enable Spring Security’s web security support and provide the Spring MVC integration. It also extends WebSecurityConfigurerAdapter and overrides a couple of its methods to set some specifics of the web security configuration.
 
-The configure(HttpSecurity) method defines which URL paths should be secured and which should not. Specifically, the "/" and "/home" paths are configured to not require any authentication. All other paths must be authenticated.
+The configure(HttpSecurity) method defines which URL paths should be secured and which should not. Specifically, the "/" and "/adminHome" paths are configured to not require any authentication. All other paths must be authenticated.
 
 When a user successfully logs in, they will be redirected to the previously requested page that required authentication. There is a custom "/login" page specified by loginPage(), and everyone is allowed to view it.
 

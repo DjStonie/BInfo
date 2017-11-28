@@ -5,13 +5,13 @@ import dk.binfo.models.Apartment;
 import java.util.List;
 
 public interface ApartmentService {
-    public Apartment findApartmentByNumber(int number);
+    Apartment findApartmentByNumber(String number);
 
-    public Apartment delete(int id);
-    public List<Apartment> findAll(); // DDENNE KASDKASDAS DA TESTES.
-    public Apartment update(Apartment apartment);
-    public Apartment findById(int id);
+    Apartment delete(int id);
+    List<Apartment> findAll(); // DDENNE KASDKASDAS DA TESTES.
+    Apartment update(Apartment apartment);
+    Apartment findById(int id);
 
     //Saves the Apartment setters.
-    public void saveApartment(Apartment apartment);
+    void saveApartment(Apartment apartment);
 }

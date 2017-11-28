@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head th:include="layout :: site-head">
+	<title>Home</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+	<!-- Main Header -->
+	<header th:replace="layout :: site-header" />
+	<aside th:replace="layout :: site-aside" />
+
+	<!-- Content Wrapper. Contains page content -->
+	<div class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+			<h1>
+				Home
+				<small>Overblik</small>
+			</h1>
+		</section>
+
+		<!-- Main content -->
+		<section class="content container-fluid">
+
+			<!-- ./col -->
+			<div sec:authorize="hasAuthority('ADMIN')" class="col-lg-3 col-xs-6">
+				<!-- small box -->
+				<div class="small-box bg-yellow">
+					<div class="inner">
+						<h3>44</h3>
+
+						<p>Nye opskrivninger</p>
+					</div>
+					<div class="icon">
+						<i class="ion ion-person-add"></i>
+					</div>
+					<a href="#" class="small-box-footer">
+						Læs mere <i class="fa fa-arrow-circle-right"></i>
+					</a>
+				</div>
+			</div>
+			<div sec:authorize="hasAuthority('user')" class="col-lg-3 col-xs-6">
+				<!-- small box -->
+				<div class="small-box bg-yellow">
+					<div class="inner">
+						<h3>1</h3>
+
+						<p>Dit kø nummer</p>
+					</div>
+					<div class="icon">
+						<i class="ion ion-person-add"></i>
+					</div>
+					<a href="#" class="small-box-footer">
+						Læs mere <i class="fa fa-arrow-circle-right"></i>
+					</a>
+				</div>
+			</div>
+			<p class="admin-message-text text-center" th:utext="${adminMessage}"></p>
+		</section>
+		<!-- /.content -->
+	</div>
+	<!-- /.content-wrapper -->
+
+	<!-- Main Footer -->
+	<footer th:replace="layout :: site-footer" />
+</div>
+</body>
+</html>
