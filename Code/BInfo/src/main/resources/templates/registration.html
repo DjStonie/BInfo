@@ -35,6 +35,11 @@
 				<label th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="validation-message"></label>
 				<span class="glyphicon glyphicon-lock form-control-feedback"></span>
 			</div>
+			<div class="form-group has-feedback">
+				<input class="form-control" type="text" th:field="*{phoneNumber}" required="" placeholder="Telefon Nummer" minlength="5">
+				<label th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" class="validation-message"></label>
+				<span class="glyphicon glyphicon-lock form-control-feedback"></span>
+			</div>
 			<div class="row">
 				<!-- /.col -->
 				<div class="col-xs-4">

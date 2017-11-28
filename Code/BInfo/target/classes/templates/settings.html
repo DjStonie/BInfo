@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="layout :: site-head">
+    <title>Admin - Settings</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <!-- Main Header -->
+    <header th:replace="layout :: site-header" />
+    <aside th:replace="layout :: site-aside" />
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                Indstillinger
+            </h1>
+        </section>
+
+        <!-- Main content -->
+        <section class="content container-fluid">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Oplysninger</h3>
+                </div>
+                <!-- /.box-header -->
+
+                <!-- form start -->
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" th:placeholder="${user.email}" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="telephoneNumber">Telefonnummer</label>
+                            <input type="tel" class="form-control" id="telephoneNumber" th:placeholder="${user.phoneNumber}" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="adgangskode">Adgangskode</label>
+                            <input type="password" class="form-control" id="adgangskode" placeholder="********" disabled>
+                        </div>
+                    </div>
+
+
+
+                <div class="box-header with-border">
+                    <h3 class="box-title">Ændrér oplysninger</h3>
+                </div>
+                <!-- /.box-header -->
+
+                <!-- form start -->
+                <form role="form">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="newTelephoneNumber">Nyt telefonnummer</label>
+                            <input type="tel" class="form-control" id="newTelephoneNumber" placeholder="Nyt telefonnummer">
+                            <br>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- form start -->
+                <form role="form">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="oldPassword">Gammel adgangskode</label>
+                            <input type="password" class="form-control" id="oldPassword" placeholder="Gammel adgangskode">
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">Ny adgangskode</label>
+                            <input type="password" class="form-control" id="newPassword" placeholder="Ny adgangskode">
+                        </div>
+                        <div class="form-group">
+                            <label for="repeatNewPassword">Gentag ny adgangskode</label>
+                            <input type="password" class="form-control" id="repeatNewPassword" placeholder="Ny adgangskode">
+                            <br>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Main Footer -->
+    <footer th:replace="layout :: site-footer" />
+</div>
+</body>
+</html>

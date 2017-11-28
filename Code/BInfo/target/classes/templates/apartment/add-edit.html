@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="layout :: site-head">
+	<title>Admin - Rediger lejlighed</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+	<!-- Main Header -->
+	<header th:replace="layout :: site-header" />
+	<aside th:replace="layout :: site-aside" />
+
+	<!-- Content Wrapper. Contains page content -->
+	<div class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+			<h1>
+				Lejligheder
+				<small>Rediger</small>
+			</h1>
+		</section>
+
+		<!-- Main content -->
+		<section class="content container-fluid">
+
+			<!-- Horizontal Form -->
+			<div class="box box-info">
+				<div class="box-header with-border">
+					<h3 class="box-title">Rediger lejlighed</h3>
+				</div>
+				<!-- /.box-header -->
+				<!-- form start -->
+				<form class="form-horizontal" id="form-horizontal" autocomplete="off" th:action="@{'/apartment/edit/' + ${apartment.id}}" th:object="${apartment}" method="post" role="form">
+					<div class="box-body">
+						<div class="form-group">
+							<label for="inputAdress" class="col-sm-2 control-label">Vejnavn</label>
+
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="inputAdress" th:value="*{address}" th:field="*{address}" required="" type="text" placeholder="Lejligheds adresse">
+								<label th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="validation-message"></label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="number" class="col-sm-2 control-label">Vejnummer</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="number" th:value="*{number}" th:field="*{number}" required="" type="number" placeholder="Lejligheds nummer" onkeydown="javascript: return event.keyCode == 69 || event.keyCode == 187 || event.keyCode == 188 || event.keyCode == 189 || event.keyCode == 190 	 ? false : true" >
+								<label th:if="${#fields.hasErrors('number')}" th:errors="*{number}" class="validation-message"></label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="rooms" class="col-sm-2 control-label">Antal rum</label>
+
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="rooms" th:value="*{rooms}" th:field="*{rooms}" type="number" required="" placeholder="Antal rum" onkeydown="javascript: return event.keyCode == 69 || event.keyCode == 187 || event.keyCode == 188 || event.keyCode == 189 || event.keyCode == 190 	 ? false : true">
+								<label th:if="${#fields.hasErrors('rooms')}" th:errors="*{rooms}" class="validation-message"></label>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="garden" class="col-sm-2 control-label">Have? Ja/Nej</label>
+							<div class="col-sm-10" id="garden">
+								<div class="checkbox icheck">
+									<label>
+										<input id="remember" th:value="*{garden}" name="remember-me" th:field="*{garden}" type="checkbox">
+										<label th:if="${#fields.hasErrors('garden')}" th:errors="*{garden}" class="validation-message"></label>
+									</label>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="size" class="col-sm-2 control-label">Kvm</label>
+
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="size" th:value="*{size}" th:field="*{size}" type="number" required="" placeholder="Lejligheds størrelse" onkeydown="javascript: return event.keyCode == 69 || event.keyCode == 187 || event.keyCode == 188 || event.keyCode == 189 || event.keyCode == 190 	 ? false : true">
+								<label th:if="${#fields.hasErrors('size')}" th:errors="*{size}" class="validation-message"></label>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="floor" class="col-sm-2 control-label">Etage</label>
+
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="floor" th:value="*{floor}" th:field="*{floor}" type="number" required="" placeholder="Lejligheds etage" onkeydown="javascript: return event.keyCode == 69 || event.keyCode == 187 || event.keyCode == 188 || event.keyCode == 189 || event.keyCode == 190 	 ? false : true">
+								<label th:if="${#fields.hasErrors('floor')}" th:errors="*{floor}" class="validation-message"></label>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="floors" class="col-sm-2 control-label">Antal etager</label>
+
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="floors" th:value="*{floors}" th:field="*{floors}" type="number" required="" placeholder="Antal etager" onkeydown="javascript: return event.keyCode == 69 || event.keyCode == 187 || event.keyCode == 188 || event.keyCode == 189 || event.keyCode == 190 	 ? false : true">
+								<label th:if="${#fields.hasErrors('floors')}" th:errors="*{floors}" class="validation-message"></label>
+							</div>
+						</div>
+					</div>
+					<!-- /.box-body -->
+					<div class="box-footer">
+						<button type="reset" class="btn btn-default"><a onclick="return confirm('Er du sikker?')">Reset</a></button>
+						<button type="Edit"  value ="Edit" class="btn btn-info pull-right"><a onclick="return confirm('Er du sikker?')">Tilføj</a></button> // TODO Hvis vi fortsat skal have denn pop-up, så skal værdien for de felter som er ændret vises i den.
+					</div>
+					<!-- /.box-footer -->
+				</form>
+			</div>
+			<!-- /.box -->
+
+			<p class="admin-message-text text-center" th:utext="${successMessage}"></p>
+		</section>
+		<!-- /.content -->
+	</div>
+	<!-- /.content-wrapper -->
+
+	<!-- Main Footer -->
+	<footer th:replace="layout :: site-footer" />
+</div>
+</body>
+</html>
